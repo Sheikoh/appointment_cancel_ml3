@@ -3,10 +3,13 @@ FROM python:3.11-slim
 WORKDIR /home/app
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends nano unzip curl \
+    && apt-get install -y --no-install-recommends nano unzip curl git\
     && rm -rf /var/lib/apt/lists/*
 
-COPY . . 
+# COPY . . 
+COPY requirements.txt /home/app/requirements.txt
+COPY MLProject /home/app/MLProject
+COPY train.py /home/app/train.py
 
 RUN curl -fsSL https://get.deta.dev/cli.sh | sh
 
@@ -17,12 +20,12 @@ RUN ./aws/install
 COPY requirements.txt /dependencies/requirements.txt
 RUN pip install -r /dependencies/requirements.txt
 
-ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-ENV BACKEND_STORE_URI=$BACKEND_STORE_URI
-ENV ARTIFACT_ROOT=$ARTIFACT_ROOT
+# ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+# ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+# ENV BACKEND_STORE_URI=$BACKEND_STORE_URI
+# ENV ARTIFACT_ROOT=$ARTIFACT_ROOT
 
-CMD mlflow server -p $PORT \
-    --host 0.0.0.0 \
-    --backend-store-uri $BACKEND_STORE_URI \
-    --default-artifact-root $ARTIFACT_ROOT 
+# CMD mlflow server -p $PORT \
+#     --host 0.0.0.0 \
+#     --backend-store-uri $BACKEND_STORE_URI \
+#     --default-artifact-root $ARTIFACT_ROOT 

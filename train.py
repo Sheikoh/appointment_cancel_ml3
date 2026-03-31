@@ -13,8 +13,13 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
+print("Tracking URI:", mlflow.get_tracking_uri())
+print("Artifact URI:", mlflow.get_artifact_uri())
 
 load_dotenv()
+
+print("Tracking URI after dot-env:", mlflow.get_tracking_uri())
+print("Artifact URI after dot-env:", mlflow.get_artifact_uri())
 
 # Tracking server
 mlflow.set_tracking_uri(os.environ["MLFLOW_TRACKING_URI"])
@@ -29,7 +34,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # experiment_name = "california_housing_regressor" # fixé dans le terminal au moment du run
-    registered_model_name = "california_housing_regressor"
+    registered_model_name = "california_housing_regressor_ft40"
     alias_name = "challenger"
 
     # mlflow.set_experiment(experiment_name) # fixé dans le terminal au moment du run
@@ -75,7 +80,7 @@ if __name__ == "__main__":
         ]
     )
 
-    with mlflow.start_run() as run:
+    with mlflow.start_run(nested=not bool(os.environ.get("MLFLOW_RUN_ID"))) as run:
         model.fit(X_train, y_train)
 
         predictions = model.predict(X_test)

@@ -1,2 +1,4 @@
 secrets.sh
+secrets.bat
 mlflow_project_dsfsft36.pem
+.env
