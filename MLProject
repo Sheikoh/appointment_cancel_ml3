@@ -5,7 +5,7 @@ docker_env:
   # Name of the image we'll be running a container from
   image: sheikoh/mlflow3-sheikoh
   # Volume binding
-  volumes: ["%cd%:/home/user/app"]
+  volumes: ["$(pwd):/home/user/app"]
   # Set environment variables
   environment:
     [
